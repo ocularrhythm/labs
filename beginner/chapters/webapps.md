@@ -8,7 +8,7 @@ Let's start by taking baby-steps. First, we'll use Docker to run a static websit
 
 The image that you are going to use is a single-page website that was already created for this demo and is available on the Docker Store as [`dockersamples/static-site`](https://store.docker.com/community/images/dockersamples/static-site). You can download and run the image directly in one go using `docker run` as follows.
 
-```
+```bash
 $ docker run -d dockersamples/static-site
 ```
 
@@ -28,14 +28,15 @@ First, stop the container that you have just launched. In order to do this, we n
 
 Since we ran the container in detached mode, we don't have to launch another terminal to do this. Run `docker ps` to view the running containers.
 
-```
+```bash
 $ docker ps
 CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES
 a7a0e504ca3e        dockersamples/static-site   "/bin/sh -c 'cd /usr/"   28 seconds ago      Up 26 seconds       80/tcp, 443/tcp     stupefied_mahavira
 ```
 
 Check out the `CONTAINER ID` column. You will need to use this `CONTAINER ID` value, a long sequence of characters, to identify the container you want to stop, and then to remove it. The example below provides the `CONTAINER ID` on our system; you should use the value that you see in your terminal.
-```
+
+```bash
 $ docker stop a7a0e504ca3e
 $ docker rm   a7a0e504ca3e
 ```
@@ -44,7 +45,7 @@ $ docker rm   a7a0e504ca3e
 
 Now, let's launch a container in **detached** mode as shown below:
 
-```
+```bash
 $ docker run --name static-site -e AUTHOR="Your Name" -d -P dockersamples/static-site
 e61d12292d69556eabe2a44c16cbd54486b2527e2ce4f95438e504afb7b02810
 ```
@@ -59,7 +60,7 @@ In the above command:
 
 Now you can see the ports by running the `docker port` command.
 
-```
+```bash
 $ docker port static-site
 443/tcp -> 0.0.0.0:32772
 80/tcp -> 0.0.0.0:32773
@@ -69,7 +70,7 @@ If you are running [Docker for Mac](https://docs.docker.com/docker-for-mac/), [D
 
 If you are using Docker Machine on Mac or Windows, you can find the hostname on the command line using `docker-machine` as follows (assuming you are using the `default` machine).
 
-```
+```bash
 $ docker-machine ip default
 192.168.99.100
 ```
@@ -77,7 +78,7 @@ You can now open `http://<YOUR_IPADDRESS>:[YOUR_PORT_FOR 80/tcp]` to see your si
 
 You can also run a second webserver at the same time, specifying a custom host port mapping to the container's webserver.
 
-```
+```bash
 $ docker run --name static-site-2 -e AUTHOR="Your Name" -d -p 8888:80 dockersamples/static-site
 ```
 <img src="../images/static.png" title="static">
@@ -88,19 +89,20 @@ Now that you've seen how to run a webserver inside a Docker container, how do yo
 
 But first, let's stop and remove the containers since you won't be using them anymore.
 
-```
+```bash
 $ docker stop static-site
 $ docker rm static-site
 ```
 
 Let's use a shortcut to remove the second site:
 
-```
+```bash
 $ docker rm -f static-site-2
 ```
 
 Run `docker ps` to make sure the containers are gone.
-```
+
+```bash
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
@@ -111,7 +113,7 @@ In this section, let's dive deeper into what Docker images are. You will build y
 
 Docker images are the basis of containers. In the previous example, you **pulled** the *dockersamples/static-site* image from the registry and asked the Docker client to run a container **based** on that image. To see the list of images that are available locally on your system, run the `docker images` command.
 
-```
+```bash
 $ docker images
 REPOSITORY             TAG                 IMAGE ID            CREATED             SIZE
 dockersamples/static-site   latest              92a386b6e686        2 hours ago        190.5 MB
@@ -132,7 +134,7 @@ For simplicity, you can think of an image akin to a git repository - images can 
 
 For example you could pull a specific version of `ubuntu` image as follows:
 
-```
+```bash
 $ docker pull ubuntu:12.04
 ```
 
@@ -140,7 +142,7 @@ If you do not specify the version number of the image then, as mentioned, the Do
 
 So for example, the `docker pull` command given below will pull an image named `ubuntu:latest`:
 
-```
+```bash
 $ docker pull ubuntu
 ```
 
@@ -189,7 +191,7 @@ Make sure to ```cd flask-app``` before you start creating the files, because you
 #### app.py
 Create the **app.py** with the following content:
 
-```
+```python
 from flask import Flask, render_template
 import random
 
@@ -228,7 +230,7 @@ Flask==0.10.1
 #### templates/index.html
 Create a directory called `templates` and create an **index.html** file in that directory with the following content in it:
 
-```
+```html
 <html>
   <head>
     <style type="text/css">
